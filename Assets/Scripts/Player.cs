@@ -31,7 +31,8 @@ public class Player : MonoBehaviour
         float horiz = 0;
         vert = Input.GetAxis("Vertical 1");
         horiz = Input.GetAxis("Horizontal 1");
-        body.velocity = new Vector2(horiz * stats.speed, vert * stats.speed);
+
+        body.velocity = new Vector2(horiz * stats.speed, -vert * stats.speed);
         HPprog.maximum = stats.MaxHP;
         HPprog.current = stats.HP;
         HPText.text = stats.HP + "/" + stats.MaxHP;
@@ -43,7 +44,6 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D colission)
     {
-        Debug.Log("HIT2");
         /* Stats collider = colission.collider.GetComponent<Stats>();
          collider.HP=collider.HP-stats.strength;
          Destroy(gameObject);*/

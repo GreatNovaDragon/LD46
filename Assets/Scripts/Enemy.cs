@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     Transform enemy;
     Stats stats;
     ProgressBar HP;
-    public string p = "Poop";
 
     // Start is called before the first frame update
     void Start()

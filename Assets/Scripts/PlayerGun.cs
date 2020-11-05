@@ -13,6 +13,7 @@ public class PlayerGun : MonoBehaviour
     public int max_bull = 5;
     public int current_bull = 0;
     public float timeBetweenBullets = 0;
+    float usedtime = 0;
     public int spread = 90;
     Stats stats;
     int bulletCountdown;
@@ -35,17 +36,19 @@ public class PlayerGun : MonoBehaviour
     void Update()
     {
         transform.rotation = Quaternion.Euler(0, 0, AngleDeg());
+        float RightTrigger;
+        RightTrigger = Input.GetAxisRaw("RightTrigger");
+
+        usedtime = timeBetweenBullets * 1/RightTrigger;
 
 
-        if (Input.GetButtonDown("Fire1") & current_bull > 0 & !is_shootin)
+        if (RightTrigger>0 & current_bull > 0 & !is_shootin)
         {
 
 
-            if (bullets_per_shot < current_bull)
-            {
-                StartCoroutine(ShootMultiBullet(bullets_per_shot)); current_bull = current_bull - bullets_per_shot;
-            }
-            else { StartCoroutine(ShootMultiBullet(current_bull)); current_bull = 0; }
+            
+                StartCoroutine(ShootMultiBullet()); current_bull = current_bull - 1;
+            
 
         }
 
@@ -75,15 +78,14 @@ public class PlayerGun : MonoBehaviour
         bullets.strength = stats.strength;
     }
 
-    IEnumerator ShootMultiBullet(int bullet)
+    IEnumerator ShootMultiBullet()
     {
         is_shootin = true;
 
-        for (int i = 0; i < bullet; i++)
-        {
+        
             ShootBullet();
-            yield return new WaitForSeconds(timeBetweenBullets);
-        }
+            yield return new WaitForSeconds(usedtime);
+        
 
         is_shootin = false;
 
@@ -107,20 +109,14 @@ public class PlayerGun : MonoBehaviour
     float AngleDeg()
     {
         float AngleDeg = 0;
-        Vector3 lookAt = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float AngleRad = Mathf.Atan2(lookAt.y - this.transform.position.y, lookAt.x - this.transform.position.x);
+       float AngleRad = 0;
+       float vert = 0;
+        float horiz = 0;
+        vert = Input.GetAxisRaw("Vertical 2");
+        horiz = Input.GetAxisRaw("Horizontal 2");
 
-
-        switch (InputControl.GetInputState())
-        {
-            case InputControl.eInputState.MouseKeyboard:
-                AngleDeg = (180 / Mathf.PI) * AngleRad;
-
-                break;
-            case InputControl.eInputState.Controler:
-                AngleDeg = Mathf.Atan2(Input.GetAxis("Vertical 2"), Input.GetAxis("Horizontal 2"));
-                break;
-        }
+                AngleRad = Mathf.Atan2(vert, horiz);
+     AngleDeg = (180 / Mathf.PI) * AngleRad -90;
         return AngleDeg;
     }
 }
