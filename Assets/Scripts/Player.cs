@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
     public GameObject HPBar;
     ProgressBar HPprog;
     Text HPText;
+
+    Vector2 _currentMove;
     void Start()
     {
         cam = Camera.main;
@@ -21,18 +24,22 @@ public class Player : MonoBehaviour
         stats = GetComponent<Stats>();
         HPprog = HPBar.GetComponent(typeof(ProgressBar)) as ProgressBar;
         HPText = HPBar.GetComponentInChildren(typeof(Text)) as Text;
+
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        _currentMove = context.ReadValue<Vector2>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        float vert = 0;
-        float horiz = 0;
-        vert = Input.GetAxis("Vertical 1");
-        horiz = Input.GetAxis("Horizontal 1");
+       
 
-        body.velocity = new Vector2(horiz * stats.speed, -vert * stats.speed);
+        body.velocity = new Vector2(_currentMove.x * stats.speed, _currentMove.y * stats.speed);
         HPprog.maximum = stats.MaxHP;
         HPprog.current = stats.HP;
         HPText.text = stats.HP + "/" + stats.MaxHP;
