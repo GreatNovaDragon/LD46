@@ -21,10 +21,9 @@ public class PlayerGun : MonoBehaviour
     public GameObject bulletbar;
     ProgressBar bulletprog;
     Text bulletText;
-    InputDevice currentDevice;
-    Vector2 lookHelp;
 
-        float RightTrigger;
+
+    float RightTrigger;
 
     void Start()
     {
@@ -39,20 +38,14 @@ public class PlayerGun : MonoBehaviour
 
     void Update()
     {
+
         transform.rotation = Quaternion.Euler(0, 0, AngleDeg());
-        // RightTrigger = Input.GetAxisRaw("RightTrigger");
 
         usedtime = timeBetweenBullets * 1 / RightTrigger;
 
-
         if (RightTrigger > 0 & current_bull > 0 & !is_shootin)
         {
-
-
-
             StartCoroutine(ShootMultiBullet()); current_bull = current_bull - 1;
-
-
         }
 
         bulletprog.maximum = max_bull;
@@ -61,21 +54,25 @@ public class PlayerGun : MonoBehaviour
 
 
     }
-public void Reload(){                    current_bull = max_bull;
-}
+    public void Reload()
+    {
+        current_bull = max_bull;
+    }
+
+    InputDevice currentDevice;
+    Vector2 lookHelp;
     public void OnLook(InputAction.CallbackContext context)
     {
         lookHelp = context.ReadValue<Vector2>();
+                Debug.Log(lookHelp);
+
         currentDevice = context.control.device;
-
-
     }
 
-public void onFire(InputAction.CallbackContext context)
-{
-    RightTrigger = context.ReadValue<float>();
-    Debug.Log(RightTrigger);
-}
+    public void onFire(InputAction.CallbackContext context)
+    {
+        RightTrigger = context.ReadValue<float>();
+    }
 
     bool is_shootin = false;
 
@@ -120,11 +117,10 @@ public void onFire(InputAction.CallbackContext context)
     }
     float AngleDeg()
     {
-        float AngleDeg = 0;
-        float AngleRad = 0;
-        float vert = 0;
-        float horiz = 0;
-
+        float AngleDeg;
+        float AngleRad;
+        float vert = lookHelp.y;
+        float horiz = lookHelp.x;
         if (currentDevice == Mouse.current)
         {
             Vector3 lookAt = Camera.main.ScreenToWorldPoint(lookHelp);
@@ -132,8 +128,6 @@ public void onFire(InputAction.CallbackContext context)
         }
         else
         {
-            vert = lookHelp.y;
-            horiz = lookHelp.x;
 
             AngleRad = Mathf.Atan2(vert, horiz);
         }

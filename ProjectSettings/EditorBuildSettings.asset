@@ -8,4 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayField.unity
     guid: eb11440fc9ef63f2192e5b550b1541af
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: fc1ae05a40c35764ab1317b6ffce858d,
+      type: 2}

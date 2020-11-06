@@ -6,16 +6,16 @@ public class EnemySharter : MonoBehaviour
 {
     public GameObject thingToShart;
     Stats stats;
-    public float enemies_per_Second;
+    public float enemiesPerSecond;
     public Transform enemyTarget;
 
-    public int max_enemy_spawned;
+    public int MaxNumberOfEnemiesSpawned;
     int enemy_shot;
 
     void Start()
     {
         stats = GetComponent<Stats>();
-        InvokeRepeating("ShootBullet", 0, (1 / enemies_per_Second));
+        InvokeRepeating("ShootBullet", 0, (1 / enemiesPerSecond));
 
     }
 
@@ -25,7 +25,7 @@ public class EnemySharter : MonoBehaviour
     }
     void ShootBullet()
     {
-        if (enemy_shot<max_enemy_spawned)
+        if (enemy_shot<MaxNumberOfEnemiesSpawned)
         {
             GameObject bullet = (GameObject)Instantiate(thingToShart, transform.position, transform.rotation);
             Stats bullets = bullet.GetComponent<Stats>();
